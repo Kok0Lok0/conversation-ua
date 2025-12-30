@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Питання для друзів</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Work+Sans:wght@400;500&display=swap');
+
+```
+:root {
+  --bg-cream: #FFF8E7;
+  --text-dark: #2C3E50;
+  --accent-pink: #FFB6C1;
+  --accent-blue: #87CEEB;
+  --accent-green: #90EE90;
+  --accent-yellow: #FFE66D;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Work Sans', sans-serif;
+  background: var(--bg-cream);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Naive doodles background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 10% 20%, var(--accent-pink) 0%, transparent 2%),
+    radial-gradient(circle at 90% 80%, var(--accent-blue) 0%, transparent 2%),
+    radial-gradient(circle at 50% 50%, var(--accent-green) 0%, transparent 2%),
+    radial-gradient(circle at 80% 20%, var(--accent-yellow) 0%, transparent 2%);
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  animation: bounceIn 0.6s ease-out;
+}
+
+.header h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-shadow: 3px 3px 0px var(--accent-pink);
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  opacity: 0.7;
+}
+
+.card-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.question-card {
+  width: 100%;
+  max-width: 380px;
+  min-height: 400px;
+  background: white;
+  border-radius: 30px;
+  padding: 40px 30px;
+  box-shadow: 
+    0 10px 30px var(--shadow),
+    inset 0 0 0 3px var(--accent-pink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.1s ease;
+  transform-origin: center center;
+}
+
+.question-card.dragging {
+  cursor: grabbing;
+}
+
+.question-card::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 33px;
+  border: 2px dashed var(--accent-blue);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.question-number {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  color: var(--accent-blue);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.question-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: var(--text-dark);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.swipe-indicators {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.swipe-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.swipe-label.dislike {
+  color: #FF6B6B;
+  transform: rotate(-20deg);
+}
+
+.swipe-label.like {
+  color: #51CF66;
+  transform: rotate(20deg);
+}
+
+.swipe-label.visible {
+  opacity: 1;
+}
+
+.instructions {
+  text-align: center;
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-out 0.5s both;
+}
+
+.instructions p {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  opacity: 0.6;
+  margin-bottom: 10px;
+}
+
+.swipe-icons {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 10px;
+}
+
+.swipe-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.swipe-icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border: 3px solid;
+  background: white;
+}
+
+.swipe-icon.dislike .swipe-icon-circle {
+  border-color: #FF6B6B;
+  color: #FF6B6B;
+}
+
+.swipe-icon.like .swipe-icon-circle {
+  border-color: #51CF66;
+  color: #51CF66;
+}
+
+.swipe-icon span {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.stats {
+  text-align: center;
+  margin-top: 20px;
+  padding: 15px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px var(--shadow);
+  animation: fadeIn 1s ease-out 0.7s both;
+}
+
+.stats p {
+  font-size: 1rem;
+  color: var(--text-dark);
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.stats button {
+  display: inline-block;
+  margin: 5px;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardExit {
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+.card-exit {
+  animation: cardExit 0.3s ease-out forwards;
+}
+
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .question-text {
+    font-size: 1.3rem;
+  }
+  
+  .question-card {
+    min-height: 350px;
+    padding: 30px 20px;
+  }
+}
+```
+
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // Initial question pool with categories
+    const initialQuestions = [
+      { text: "Яка твоя найбезглуздіша мрія?", category: "dreams" },
+      { text: "Що б ти змінив у своєму житті, якби міг?", category: "life" },
+      { text: "Який був твій найсміливіший вчинок?", category: "experiences" },
+      { text: "Що тебе справді лякає?", category: "fears" },
+      { text: "Яку суперсилу ти б хотів мати і чому?", category: "dreams" },
+      { text: "Який момент зі свого минулого ти б хотів пережити знову?", category: "memories" },
+      { text: "Що для тебе означає справжня дружба?", category: "relationships" },
+      { text: "Яка книга чи фільм змінили твій погляд на світ?", category: "culture" },
+      { text: "Про що ти найчастіше мріяєш?", category: "dreams" },
+      { text: "Який найцінніший урок ти отримав від невдачі?", category: "growth" },
+      { text: "Що приносить тобі найбільше задоволення в житті?", category: "happiness" },
+      { text: "Якби ти міг поговорити з собою в минулому, що б ти порадив?", category: "wisdom" },
+      { text: "Яке твоє найяскравіше дитяче спогад?", category: "memories" },
+      { text: "Що робить тебе унікальним?", category: "identity" },
+      { text: "Якою людиною ти хочеш стати через 10 років?", category: "future" },
+      { text: "Що тебе надихає продовжувати, коли важко?", category: "motivation" },
+      { text: "Який найкращий комплімент ти коли-небудь отримував?", category: "relationships" },
+      { text: "Що ти б зробив, якби знав, що не зазнаєш невдачі?", category: "courage" },
+      { text: "Яка твоя таємна пристрасть?", category: "interests" },
+      { text: "Який найскладніший вибір ти коли-небудь робив?", category: "decisions" },
+      { text: "Що змушує тебе почуватися живим?", category: "emotions" },
+      { text: "Якби у тебе був один день без обмежень, як би ти його провів?", category: "dreams" },
+      { text: "Яка традиція чи звичка найбільше тобі подобається?", category: "culture" },
+      { text: "Що тебе дивує в людях?", category: "observations" },
+      { text: "Який найдобріший вчинок хтось коли-небудь зробив для тебе?", category: "kindness" },
+      { text: "Про що ти ніколи не пошкодуєш?", category: "values" },
+      { text: "Яка подія найбільше вплинула на те, ким ти є сьогодні?", category: "growth" },
+      { text: "Що б ти хотів, щоб люди знали про тебе?", category: "identity" },
+      { text: "Який талант ти б хотів розвинути?", category: "aspirations" },
+      { text: "Що для тебе означає успіх?", category: "values" },
+      { text: "Яке місце на планеті ти мрієш відвідати?", category: "travel" },
+      { text: "Що робить тебе щасливим прямо зараз?", category: "happiness" },
+      { text: "Який урок ти хотів би передати іншим?", category: "wisdom" },
+      { text: "Що тебе найбільше хвилює щодо майбутнього?", category: "future" },
+      { text: "Яку пісню ти б обрав як саундтрек свого життя?", category: "culture" },
+      { text: "Що ти цінуєш у собі найбільше?", category: "self" },
+      { text: "Який найдивніший досвід у тебе був?", category: "experiences" },
+      { text: "Що б ти хотів сказати людині, яка тобі важлива?", category: "relationships" },
+      { text: "Яка твоя найбільша перемога над собою?", category: "growth" },
+      { text: "Що змушує тебе сміятися до сліз?", category: "humor" }
+    ];
+
+    function App() {
+      const [questions, setQuestions] = useState([]);
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [likes, setLikes] = useState(0);
+      const [dislikes, setDislikes] = useState(0);
+      const [preferences, setPreferences] = useState({});
+      const [isDragging, setIsDragging] = useState(false);
+      const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+      const [swipeDirection, setSwipeDirection] = useState(null);
+      
+      const cardRef = useRef(null);
+      const startPosRef = useRef({ x: 0, y: 0 });
+
+      // Initialize questions
+      useEffect(() => {
+        const shuffled = [...initialQuestions].sort(() => Math.random() - 0.5);
+        setQuestions(shuffled);
+        
+        // Load preferences from localStorage
+        const saved = localStorage.getItem('questionPreferences');
+        if (saved) {
+          setPreferences(JSON.parse(saved));
+        }
+      }, []);
+
+      // Save preferences to localStorage
+      useEffect(() => {
+        if (Object.keys(preferences).length > 0) {
+          localStorage.setItem('questionPreferences', JSON.stringify(preferences));
+        }
+      }, [preferences]);
+
+      // Learning algorithm: adjust question selection based on preferences
+      const getNextQuestions = (likedCategory) => {
+        const categoryScores = { ...preferences };
+        
+        if (likedCategory) {
+          categoryScores[likedCategory] = (categoryScores[likedCategory] || 0) + 1;
+        }
+        
+        setPreferences(categoryScores);
+        
+        // Sort remaining questions by category preference
+        const remaining = initialQuestions.filter(q => 
+          !questions.slice(0, currentIndex + 1).includes(q)
+        );
+        
+        const sorted = remaining.sort((a, b) => {
+          const scoreA = categoryScores[a.category] || 0;
+          const scoreB = categoryScores[b.category] || 0;
+          return scoreB - scoreA;
+        });
+        
+        // Add some randomness to avoid being too predictable
+        const topQuestions = sorted.slice(0, 10);
+        const shuffled = topQuestions.sort(() => Math.random() - 0.5);
+        
+        return [...questions.slice(0, currentIndex + 1), ...shuffled, ...sorted.slice(10)];
+      };
+
+      const handleSwipe = (direction) => {
+        const currentQuestion = questions[currentIndex];
+        
+        if (direction === 'right') {
+          setLikes(prev => prev + 1);
+          const updated = getNextQuestions(currentQuestion.category);
+          setQuestions(updated);
+        } else {
+          setDislikes(prev => prev + 1);
+        }
+        
+        // Add exit animation
+        if (cardRef.current) {
+          cardRef.current.classList.add('card-exit');
+        }
+        
+        setTimeout(() => {
+          setCurrentIndex(prev => prev + 1);
+          setDragOffset({ x: 0, y: 0 });
+          setSwipeDirection(null);
+          if (cardRef.current) {
+            cardRef.current.classList.remove('card-exit');
+          }
+        }, 300);
+      };
+
+      // Touch and mouse event handlers
+      const handleStart = (e) => {
+        setIsDragging(true);
+        const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+        const clientY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
+        startPosRef.current = { x: clientX, y: clientY };
+      };
+
+      const handleMove = (e) => {
+        if (!isDragging) return;
+        
+        const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+        const clientY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
+        
+        const deltaX = clientX - startPosRef.current.x;
+        const deltaY = clientY - startPosRef.current.y;
+        
+        setDragOffset({ x: deltaX, y: deltaY });
+        
+        // Show swipe indicators
+        if (Math.abs(deltaX) > 50) {
+          setSwipeDirection(deltaX > 0 ? 'right' : 'left');
+        } else {
+          setSwipeDirection(null);
+        }
+      };
+
+      const handleEnd = () => {
+        setIsDragging(false);
+        
+        // Trigger swipe if dragged far enough
+        if (Math.abs(dragOffset.x) > 100) {
+          handleSwipe(dragOffset.x > 0 ? 'right' : 'left');
+        } else {
+          setDragOffset({ x: 0, y: 0 });
+          setSwipeDirection(null);
+        }
+      };
+
+      const [isGenerating, setIsGenerating] = useState(false);
+      const [generatedQuestions, setGeneratedQuestions] = useState([]);
+
+      const generateNewQuestions = async () => {
+        setIsGenerating(true);
+        
+        try {
+          // Get liked questions for context
+          const likedQuestions = questions
+            .slice(0, currentIndex)
+            .filter((_, idx) => {
+              // Track which questions were liked based on swipe history
+              // This is simplified - in production you'd track this more carefully
+              return true; // We'll use preferences instead
+            });
+
+          // Get top preferred categories
+          const sortedCategories = Object.entries(preferences)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5)
+            .map(([cat]) => cat);
+
+          const categoryContext = sortedCategories.length > 0 
+            ? `Користувач найбільше любить питання про: ${sortedCategories.join(', ')}.`
+            : '';
+
+          // Get sample liked questions
+          const sampleQuestions = questions
+            .filter(q => sortedCategories.includes(q.category))
+            .slice(0, 5)
+            .map(q => q.text);
+
+          const prompt = `Ти помічник, який створює питання для розмов між друзями українською мовою.
+
+${categoryContext}
+
+Ось приклади питань, які сподобались користувачу:
+${sampleQuestions.map(q => `- ${q}`).join('\n')}
+
+Створи 40 нових унікальних питань українською мовою для друзів, які:
+1. Схожі за стилем і тематикою на приклади вище
+2. Викликають глибокі розмови
+3. Не повторюються з існуючими
+4. Підходять для компанії друзів
+
+ВАЖЛИВО: Відповідай ТІЛЬКИ у форматі JSON масиву об'єктів, без жодного додаткового тексту, пояснень чи markdown коду. Формат:
+[{"text":"Питання тут?","category":"dreams"},{"text":"Ще питання?","category":"life"}]
+
+Використовуй ці категорії: dreams, life, experiences, fears, memories, relationships, culture, growth, happiness, wisdom, identity, future, motivation, courage, interests, decisions, emotions, observations, kindness, values, aspirations, travel, self, humor`;
+
+          const response = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: 'claude-sonnet-4-20250514',
+              max_tokens: 1000,
+              messages: [
+                { role: 'user', content: prompt }
+              ]
+            })
+          });
+
+          const data = await response.json();
+          const responseText = data.content
+            .filter(item => item.type === 'text')
+            .map(item => item.text)
+            .join('');
+
+          // Clean response and parse JSON
+          const cleanedText = responseText
+            .replace(/```json/g, '')
+            .replace(/```/g, '')
+            .trim();
+
+          const newQuestions = JSON.parse(cleanedText);
+          
+          if (Array.isArray(newQuestions) && newQuestions.length > 0) {
+            setGeneratedQuestions(newQuestions);
+            setQuestions(newQuestions);
+            setCurrentIndex(0);
+            setLikes(0);
+            setDislikes(0);
+          } else {
+            throw new Error('Invalid response format');
+          }
+        } catch (error) {
+          console.error('Error generating questions:', error);
+          alert('Помилка при генерації питань. Спробуйте ще раз.');
+        } finally {
+          setIsGenerating(false);
+        }
+      };
+
+      // Reset when all questions are done
+      if (currentIndex >= questions.length) {
+        return (
+          <div className="container">
+            <div className="header">
+              <h1>Готово! 🎉</h1>
+              <p>Ти переглянув усі питання</p>
+            </div>
+            <div className="stats">
+              <p>Вподобано: {likes} | Не сподобалось: {dislikes}</p>
+              <p style={{ fontSize: '0.9rem', marginTop: '10px', marginBottom: '15px' }}>
+                💡 Натисни "Згенерувати", щоб отримати нові питання на основі твоїх вподобань
+              </p>
+              
+              <button 
+                onClick={generateNewQuestions}
+                disabled={isGenerating}
+                style={{
+                  marginTop: '20px',
+                  padding: '15px 30px',
+                  fontSize: '1.1rem',
+                  fontFamily: 'Poppins, sans-serif',
+                  background: isGenerating ? '#ccc' : 'var(--accent-green)',
+                  border: '3px solid var(--text-dark)',
+                  borderRadius: '15px',
+                  cursor: isGenerating ? 'not-allowed' : 'pointer',
+                  fontWeight: 600,
+                  marginRight: '10px'
+                }}
+              >
+                {isGenerating ? '⏳ Генерую...' : '✨ Згенерувати 40 нових питань'}
+              </button>
+
+              <button 
+                onClick={() => {
+                  const shuffled = [...initialQuestions].sort(() => Math.random() - 0.5);
+                  setQuestions(shuffled);
+                  setCurrentIndex(0);
+                  setLikes(0);
+                  setDislikes(0);
+                }}
+                style={{
+                  marginTop: '20px',
+                  padding: '15px 30px',
+                  fontSize: '1.1rem',
+                  fontFamily: 'Poppins, sans-serif',
+                  background: 'var(--accent-pink)',
+                  border: '3px solid var(--text-dark)',
+                  borderRadius: '15px',
+                  cursor: 'pointer',
+                  fontWeight: 600
+                }}
+              >
+                🔄 Почати знову з оригінальних
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      const currentQuestion = questions[currentIndex];
+      const rotation = dragOffset.x * 0.03;
+      const opacity = 1 - Math.abs(dragOffset.x) / 300;
+
+      return (
+        <div className="container">
+          <div className="header">
+            <h1>Питання для друзів</h1>
+            <p>Смахни вправо або вліво</p>
+          </div>
+
+          <div className="card-container">
+            <div
+              ref={cardRef}
+              className={`question-card ${isDragging ? 'dragging' : ''}`}
+              style={{
+                transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) rotate(${rotation}deg)`,
+                opacity: opacity
+              }}
+              onMouseDown={handleStart}
+              onMouseMove={handleMove}
+              onMouseUp={handleEnd}
+              onMouseLeave={handleEnd}
+              onTouchStart={handleStart}
+              onTouchMove={handleMove}
+              onTouchEnd={handleEnd}
+            >
+              <div className="question-number">
+                Питання {currentIndex + 1} / {questions.length}
+              </div>
+              <div className="question-text">
+                {currentQuestion?.text}
+              </div>
+            </div>
+
+            <div className="swipe-indicators">
+              <div className={`swipe-label dislike ${swipeDirection === 'left' ? 'visible' : ''}`}>
+                НІ
+              </div>
+              <div className={`swipe-label like ${swipeDirection === 'right' ? 'visible' : ''}`}>
+                ТАК
+              </div>
+            </div>
+          </div>
+
+          <div className="instructions">
+            <p>Смахни картку або натисни на кнопки</p>
+            <div className="swipe-icons">
+              <div className="swipe-icon dislike" onClick={() => handleSwipe('left')}>
+                <div className="swipe-icon-circle">✕</div>
+                <span>Не подобається</span>
+              </div>
+              <div className="swipe-icon like" onClick={() => handleSwipe('right')}>
+                <div className="swipe-icon-circle">♡</div>
+                <span>Подобається</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="stats">
+            <p>Вподобано: {likes} | Не сподобалось: {dislikes}</p>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+
+</body>
+</html>
