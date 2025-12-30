@@ -6,20 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Питання для друзів</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 ```
 :root {
   --bg-primary: #0a0a0a;
-  --bg-secondary: #111111;
   --bg-card: #1a1a1a;
   --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --accent: #ffffff;
-  --accent-green: #10b981;
-  --accent-red: #ef4444;
-  --border: rgba(255, 255, 255, 0.1);
-  --shadow: rgba(0, 0, 0, 0.5);
+  --text-secondary: #6b6b6b;
+  --border: rgba(255, 255, 255, 0.08);
 }
 
 * {
@@ -29,19 +24,17 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
   max-width: 440px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 60px 20px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -49,21 +42,21 @@ body {
 
 .header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 60px;
 }
 
 .header h1 {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 500;
   color: var(--text-primary);
-  margin-bottom: 8px;
-  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
 }
 
 .header p {
   font-size: 0.875rem;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .card-container {
@@ -71,57 +64,41 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1000px;
   position: relative;
-  margin-bottom: 32px;
+  margin-bottom: 48px;
 }
 
 .question-card {
   width: 100%;
   max-width: 400px;
-  min-height: 480px;
+  min-height: 500px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 48px 32px;
+  border-radius: 16px;
+  padding: 64px 40px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   position: relative;
   cursor: grab;
   user-select: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center center;
+  transition: border-color 0.3s ease;
 }
 
 .question-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .question-card.dragging {
   cursor: grabbing;
 }
 
-.question-number {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 32px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
 .question-text {
-  font-size: 1.5rem;
-  line-height: 1.5;
+  font-size: 1.375rem;
+  line-height: 1.6;
   color: var(--text-primary);
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
 }
 
@@ -133,118 +110,91 @@ body {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 40px;
+  padding: 0 48px;
   pointer-events: none;
-  z-index: 10;
 }
 
 .swipe-label {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 400;
   opacity: 0;
   transition: opacity 0.2s ease;
-  letter-spacing: -0.02em;
-}
-
-.swipe-label.dislike {
-  color: var(--accent-red);
-}
-
-.swipe-label.like {
-  color: var(--accent-green);
+  color: var(--text-secondary);
 }
 
 .swipe-label.visible {
-  opacity: 1;
+  opacity: 0.4;
 }
 
 .controls {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
   margin-bottom: 24px;
 }
 
-.swipe-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-}
-
 .swipe-button {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   border: 1px solid var(--border);
-  background: var(--bg-card);
+  background: transparent;
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
 }
 
 .swipe-button:hover {
-  border-color: var(--accent);
-  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
 }
 
 .swipe-button:active {
   transform: scale(0.95);
 }
 
-.swipe-button.dislike:hover {
-  border-color: var(--accent-red);
-  color: var(--accent-red);
-}
-
-.swipe-button.like:hover {
-  border-color: var(--accent-green);
-  color: var(--accent-green);
-}
-
-.stats {
+.end-screen {
+  max-width: 360px;
+  margin: 0 auto;
   text-align: center;
-  padding: 20px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
 }
 
-.stats p {
-  font-size: 0.875rem;
+.end-description {
+  font-size: 1rem;
+  line-height: 1.6;
   color: var(--text-secondary);
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 }
 
 .button {
-  display: inline-block;
-  padding: 12px 24px;
+  display: block;
+  width: 100%;
+  padding: 16px 24px;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
   font-family: 'Inter', sans-serif;
-  background: var(--accent);
+  background: var(--text-primary);
   color: var(--bg-primary);
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  margin: 4px;
+  transition: opacity 0.2s ease;
+  margin-bottom: 12px;
 }
 
 .button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
-}
-
-.button:active {
-  transform: translateY(0);
+  opacity: 0.9;
 }
 
 .button:disabled {
-  background: var(--bg-secondary);
+  background: var(--bg-card);
   color: var(--text-secondary);
   cursor: not-allowed;
-  transform: none;
+  opacity: 1;
 }
 
 .button.secondary {
@@ -254,16 +204,21 @@ body {
 }
 
 .button.secondary:hover {
-  border-color: var(--accent);
+  border-color: rgba(255, 255, 255, 0.2);
+  opacity: 1;
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 32px 16px;
+    padding: 40px 16px;
+  }
+  
+  .header {
+    margin-bottom: 48px;
   }
   
   .header h1 {
-    font-size: 1.75rem;
+    font-size: 1.25rem;
   }
   
   .question-text {
@@ -271,13 +226,8 @@ body {
   }
   
   .question-card {
-    min-height: 420px;
-    padding: 40px 24px;
-  }
-  
-  .swipe-button {
-    width: 56px;
-    height: 56px;
+    min-height: 450px;
+    padding: 48px 32px;
   }
 }
 ```
@@ -342,8 +292,6 @@ body {
     function App() {
       const [questions, setQuestions] = useState([]);
       const [currentIndex, setCurrentIndex] = useState(0);
-      const [likes, setLikes] = useState(0);
-      const [dislikes, setDislikes] = useState(0);
       const [preferences, setPreferences] = useState({});
       const [isDragging, setIsDragging] = useState(false);
       const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -352,10 +300,12 @@ body {
       
       const cardRef = useRef(null);
       const startPosRef = useRef({ x: 0, y: 0 });
+      
+      const QUESTIONS_PER_ROUND = 10;
 
       useEffect(() => {
         const shuffled = [...initialQuestions].sort(() => Math.random() - 0.5);
-        setQuestions(shuffled);
+        setQuestions(shuffled.slice(0, QUESTIONS_PER_ROUND));
         
         const saved = localStorage.getItem('questionPreferences');
         if (saved) {
@@ -369,41 +319,19 @@ body {
         }
       }, [preferences]);
 
-      const getNextQuestions = (likedCategory) => {
+      const recordPreference = (question, liked) => {
         const categoryScores = { ...preferences };
         
-        if (likedCategory) {
-          categoryScores[likedCategory] = (categoryScores[likedCategory] || 0) + 1;
+        if (liked) {
+          categoryScores[question.category] = (categoryScores[question.category] || 0) + 1;
         }
         
         setPreferences(categoryScores);
-        
-        const remaining = initialQuestions.filter(q => 
-          !questions.slice(0, currentIndex + 1).includes(q)
-        );
-        
-        const sorted = remaining.sort((a, b) => {
-          const scoreA = categoryScores[a.category] || 0;
-          const scoreB = categoryScores[b.category] || 0;
-          return scoreB - scoreA;
-        });
-        
-        const topQuestions = sorted.slice(0, 10);
-        const shuffled = topQuestions.sort(() => Math.random() - 0.5);
-        
-        return [...questions.slice(0, currentIndex + 1), ...shuffled, ...sorted.slice(10)];
       };
 
       const handleSwipe = (direction) => {
         const currentQuestion = questions[currentIndex];
-        
-        if (direction === 'right') {
-          setLikes(prev => prev + 1);
-          const updated = getNextQuestions(currentQuestion.category);
-          setQuestions(updated);
-        } else {
-          setDislikes(prev => prev + 1);
-        }
+        recordPreference(currentQuestion, direction === 'right');
         
         setCurrentIndex(prev => prev + 1);
         setDragOffset({ x: 0, y: 0 });
@@ -459,10 +387,15 @@ body {
             ? `Користувач найбільше любить питання про: ${sortedCategories.join(', ')}.`
             : '';
 
-          const sampleQuestions = questions
-            .filter(q => sortedCategories.includes(q.category))
-            .slice(0, 5)
-            .map(q => q.text);
+          const likedQuestionExamples = [];
+          for (let i = 0; i < questions.length; i++) {
+            const q = questions[i];
+            if (sortedCategories.includes(q.category)) {
+              likedQuestionExamples.push(q.text);
+            }
+          }
+
+          const sampleQuestions = likedQuestionExamples.slice(0, 5);
 
           const prompt = `Ти помічник, який створює питання для розмов між друзями українською мовою.
 
@@ -471,11 +404,11 @@ ${categoryContext}
 Ось приклади питань, які сподобались користувачу:
 ${sampleQuestions.map(q => `- ${q}`).join('\n')}
 
-Створи 40 нових унікальних питань українською мовою для друзів, які:
+Створи 10 нових унікальних питань українською мовою для друзів, які:
 1. Схожі за стилем і тематикою на приклади вище
-2. Викликають глибокі розмови
+2. Викликають глибокі, вдумливі розмови
 3. Не повторюються з існуючими
-4. Підходять для компанії друзів
+4. Підходять для спокійної компанії друзів
 
 ВАЖЛИВО: Відповідай ТІЛЬКИ у форматі JSON масиву об'єктів, без жодного додаткового тексту, пояснень чи markdown коду. Формат:
 [{"text":"Питання тут?","category":"dreams"},{"text":"Ще питання?","category":"life"}]
@@ -510,50 +443,61 @@ ${sampleQuestions.map(q => `- ${q}`).join('\n')}
           const newQuestions = JSON.parse(cleanedText);
           
           if (Array.isArray(newQuestions) && newQuestions.length > 0) {
-            setQuestions(newQuestions);
+            setQuestions(newQuestions.slice(0, QUESTIONS_PER_ROUND));
             setCurrentIndex(0);
-            setLikes(0);
-            setDislikes(0);
           } else {
             throw new Error('Invalid response format');
           }
         } catch (error) {
           console.error('Error generating questions:', error);
-          alert('Помилка при генерації питань. Спробуйте ще раз.');
+          alert('Не вдалося згенерувати питання. Спробуйте ще раз.');
         } finally {
           setIsGenerating(false);
         }
+      };
+
+      const startNewRound = () => {
+        const availableQuestions = initialQuestions.filter(q => 
+          !questions.includes(q)
+        );
+        
+        if (availableQuestions.length < QUESTIONS_PER_ROUND) {
+          const shuffled = [...initialQuestions].sort(() => Math.random() - 0.5);
+          setQuestions(shuffled.slice(0, QUESTIONS_PER_ROUND));
+        } else {
+          const shuffled = availableQuestions.sort(() => Math.random() - 0.5);
+          setQuestions(shuffled.slice(0, QUESTIONS_PER_ROUND));
+        }
+        
+        setCurrentIndex(0);
       };
 
       if (currentIndex >= questions.length) {
         return (
           <div className="container">
             <div className="header">
-              <h1>Готово</h1>
-              <p>Ти переглянув усі питання</p>
+              <h1>Раунд завершено</h1>
+              <p>Ви переглянули {QUESTIONS_PER_ROUND} питань</p>
             </div>
-            <div className="stats">
-              <p>Вподобано: {likes} • Пропущено: {dislikes}</p>
+            <div className="end-screen">
+              <p className="end-description">
+                Продовжити з новими питаннями на основі ваших вподобань, 
+                або почати інший раунд.
+              </p>
               
               <button 
                 onClick={generateNewQuestions}
                 disabled={isGenerating}
                 className="button"
               >
-                {isGenerating ? 'Генерую...' : 'Згенерувати нові питання'}
+                {isGenerating ? 'Готую питання...' : 'Згенерувати на основі вподобань'}
               </button>
 
               <button 
-                onClick={() => {
-                  const shuffled = [...initialQuestions].sort(() => Math.random() - 0.5);
-                  setQuestions(shuffled);
-                  setCurrentIndex(0);
-                  setLikes(0);
-                  setDislikes(0);
-                }}
+                onClick={startNewRound}
                 className="button secondary"
               >
-                Почати знову
+                Новий раунд
               </button>
             </div>
           </div>
@@ -561,14 +505,14 @@ ${sampleQuestions.map(q => `- ${q}`).join('\n')}
       }
 
       const currentQuestion = questions[currentIndex];
-      const rotation = dragOffset.x * 0.03;
-      const opacity = 1 - Math.abs(dragOffset.x) / 300;
+      const rotation = dragOffset.x * 0.02;
+      const opacity = 1 - Math.abs(dragOffset.x) / 400;
 
       return (
         <div className="container">
           <div className="header">
             <h1>Питання для друзів</h1>
-            <p>Смахни вправо або вліво</p>
+            <p>{currentIndex + 1} з {QUESTIONS_PER_ROUND}</p>
           </div>
 
           <div className="card-container">
@@ -587,9 +531,6 @@ ${sampleQuestions.map(q => `- ${q}`).join('\n')}
               onTouchMove={handleMove}
               onTouchEnd={handleEnd}
             >
-              <div className="question-number">
-                {currentIndex + 1} / {questions.length}
-              </div>
               <div className="question-text">
                 {currentQuestion?.text}
               </div>
@@ -597,27 +538,21 @@ ${sampleQuestions.map(q => `- ${q}`).join('\n')}
 
             <div className="swipe-indicators">
               <div className={`swipe-label dislike ${swipeDirection === 'left' ? 'visible' : ''}`}>
-                НІ
+                —
               </div>
               <div className={`swipe-label like ${swipeDirection === 'right' ? 'visible' : ''}`}>
-                ТАК
+                +
               </div>
             </div>
           </div>
 
           <div className="controls">
-            <div className="swipe-buttons">
-              <button className="swipe-button dislike" onClick={() => handleSwipe('left')}>
-                ✕
-              </button>
-              <button className="swipe-button like" onClick={() => handleSwipe('right')}>
-                ♡
-              </button>
-            </div>
-          </div>
-
-          <div className="stats">
-            <p>Вподобано: {likes} • Пропущено: {dislikes}</p>
+            <button className="swipe-button dislike" onClick={() => handleSwipe('left')}>
+              —
+            </button>
+            <button className="swipe-button like" onClick={() => handleSwipe('right')}>
+              +
+            </button>
           </div>
         </div>
       );
