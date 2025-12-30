@@ -1,0 +1,13 @@
+{
+  "name": "conversation-questions-ua",
+  "version": "1.0.0",
+  "description": "Ukrainian conversation questions app with swipe functionality",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'No build step required'"
+  },
+  "keywords": ["react", "conversation", "questions", "ukrainian", "swipe"],
+  "author": "",
+  "license": "MIT"
+}
