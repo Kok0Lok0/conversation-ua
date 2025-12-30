@@ -6,23 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Питання для друзів</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Work+Sans:wght@400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 ```
 :root {
-  --bg-dark: #0f172a;
-  --bg-gradient-start: #1e293b;
-  --bg-gradient-end: #0f172a;
-  --text-light: #f1f5f9;
-  --text-gold: #fbbf24;
-  --accent-red: #dc2626;
-  --accent-green: #16a34a;
-  --accent-gold: #f59e0b;
-  --accent-white: #f8fafc;
-  --shadow: rgba(0, 0, 0, 0.3);
-  --glow-red: rgba(220, 38, 38, 0.4);
-  --glow-green: rgba(22, 163, 74, 0.4);
-  --glow-gold: rgba(251, 191, 36, 0.4);
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-card: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --accent: #ffffff;
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --border: rgba(255, 255, 255, 0.1);
+  --shadow: rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -32,148 +29,41 @@
 }
 
 body {
-  font-family: 'Work Sans', sans-serif;
-  background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-  color: var(--text-light);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
-  position: relative;
-}
-
-/* Snowflakes animation */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(2px 2px at 20% 30%, white, transparent),
-    radial-gradient(2px 2px at 60% 70%, white, transparent),
-    radial-gradient(1px 1px at 50% 50%, white, transparent),
-    radial-gradient(1px 1px at 80% 10%, white, transparent),
-    radial-gradient(2px 2px at 90% 60%, white, transparent),
-    radial-gradient(1px 1px at 33% 80%, white, transparent),
-    radial-gradient(1px 1px at 15% 90%, white, transparent);
-  background-size: 200% 200%;
-  background-position: 0% 0%;
-  animation: snowfall 20s linear infinite;
-  opacity: 0.6;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Falling snowflakes */
-body::after {
-  content: '❄';
-  position: fixed;
-  top: -50px;
-  left: 0;
-  right: 0;
-  font-size: 20px;
-  color: white;
-  opacity: 0.8;
-  animation: snowDrift 15s linear infinite;
-  pointer-events: none;
-  z-index: 1;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-}
-
-@keyframes snowfall {
-  0% {
-    background-position: 0% 0%, 0% 0%, 0% 0%;
-  }
-  100% {
-    background-position: 100% 100%, -100% 100%, 50% 100%;
-  }
-}
-
-@keyframes snowDrift {
-  0% {
-    transform: translateY(-50px) translateX(0px);
-  }
-  100% {
-    transform: translateY(100vh) translateX(100px);
-  }
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
-  max-width: 500px;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 20px;
-  position: relative;
-  z-index: 1;
+  padding: 40px 20px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* Christmas lights decoration */
-.container::before {
-  content: '🔴 🟢 🔴 🟡 🔴 🟢 🔴 🟡 🔴 🟢';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 24px;
-  padding: 10px;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 2px solid var(--accent-gold);
-  z-index: 100;
-  animation: lightsGlow 2s ease-in-out infinite alternate;
-}
-
-@keyframes lightsGlow {
-  0% {
-    filter: brightness(1);
-  }
-  100% {
-    filter: brightness(1.5);
-  }
-}
-
 .header {
   text-align: center;
-  margin-bottom: 30px;
-  margin-top: 60px;
-  animation: bounceIn 0.6s ease-out;
-  position: relative;
-  z-index: 2;
+  margin-bottom: 48px;
 }
 
 .header h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-gold) 50%, var(--accent-green) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 30px var(--glow-gold);
-  margin-bottom: 10px;
-  filter: drop-shadow(0 0 20px var(--glow-red));
-  animation: glow 3s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-  0% {
-    filter: drop-shadow(0 0 20px var(--glow-red)) drop-shadow(0 0 30px var(--glow-gold));
-  }
-  50% {
-    filter: drop-shadow(0 0 30px var(--glow-green)) drop-shadow(0 0 40px var(--glow-gold));
-  }
-  100% {
-    filter: drop-shadow(0 0 20px var(--glow-red)) drop-shadow(0 0 30px var(--glow-gold));
-  }
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
 }
 
 .header p {
-  font-size: 1.2rem;
-  color: var(--text-gold);
-  opacity: 0.9;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .card-container {
@@ -183,23 +73,17 @@ body::after {
   justify-content: center;
   perspective: 1000px;
   position: relative;
-  margin-bottom: 40px;
-  z-index: 2;
+  margin-bottom: 32px;
 }
 
 .question-card {
   width: 100%;
-  max-width: 380px;
-  min-height: 400px;
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(22, 163, 74, 0.1) 100%);
-  backdrop-filter: blur(10px);
-  border: 3px solid var(--accent-gold);
-  border-radius: 30px;
-  padding: 40px 30px;
-  box-shadow: 
-    0 20px 60px var(--shadow),
-    0 0 40px var(--glow-gold),
-    inset 0 0 30px rgba(251, 191, 36, 0.1);
+  max-width: 400px;
+  min-height: 480px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 48px 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -208,108 +92,37 @@ body::after {
   position: relative;
   cursor: grab;
   user-select: none;
-  transition: transform 0.1s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center center;
-  animation: cardFloat 4s ease-in-out infinite;
 }
 
-/* Christmas ornaments on corners */
-.question-card::before {
-  content: '🔴';
-  position: absolute;
-  top: -15px;
-  left: -15px;
-  font-size: 30px;
-  animation: ornamentSpin 4s linear infinite;
-  filter: drop-shadow(0 0 10px var(--glow-red));
-}
-
-.question-card::after {
-  content: '🟢';
-  position: absolute;
-  top: -15px;
-  right: -15px;
-  font-size: 30px;
-  animation: ornamentSpin 4s linear infinite reverse;
-  filter: drop-shadow(0 0 10px var(--glow-green));
-}
-
-@keyframes cardFloat {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes ornamentSpin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Sparkles around the card */
-@keyframes sparkle {
-  0%, 100% {
-    opacity: 0;
-    transform: scale(0);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.card-container::before,
-.card-container::after {
-  content: '✨';
-  position: absolute;
-  font-size: 30px;
-  animation: sparkle 3s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.card-container::before {
-  top: 10%;
-  left: 10%;
-  animation-delay: 0s;
-}
-
-.card-container::after {
-  bottom: 10%;
-  right: 10%;
-  animation-delay: 1.5s;
+.question-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .question-card.dragging {
   cursor: grabbing;
-  animation: none;
 }
 
 .question-number {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.2rem;
-  color: var(--accent-gold);
-  margin-bottom: 20px;
+  font-size: 0.75rem;
   font-weight: 600;
-  text-shadow: 0 0 10px var(--glow-gold);
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .question-text {
-  font-family: 'Poppins', sans-serif;
   font-size: 1.5rem;
-  line-height: 1.6;
-  color: var(--text-light);
+  line-height: 1.5;
+  color: var(--text-primary);
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 500;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.01em;
 }
 
 .swipe-indicators {
@@ -320,194 +133,151 @@ body::after {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 30px;
+  padding: 0 40px;
   pointer-events: none;
   z-index: 10;
 }
 
 .swipe-label {
-  font-family: 'Poppins', sans-serif;
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 700;
   opacity: 0;
   transition: opacity 0.2s ease;
-  text-shadow: 0 0 20px currentColor;
+  letter-spacing: -0.02em;
 }
 
 .swipe-label.dislike {
   color: var(--accent-red);
-  transform: rotate(-20deg);
-  filter: drop-shadow(0 0 10px var(--glow-red));
 }
 
 .swipe-label.like {
   color: var(--accent-green);
-  transform: rotate(20deg);
-  filter: drop-shadow(0 0 10px var(--glow-green));
 }
 
 .swipe-label.visible {
   opacity: 1;
 }
 
-.instructions {
+.controls {
   text-align: center;
-  margin-bottom: 20px;
-  animation: fadeIn 1s ease-out 0.5s both;
-  position: relative;
-  z-index: 2;
+  margin-bottom: 24px;
 }
 
-.instructions p {
-  font-size: 1.1rem;
-  color: var(--text-gold);
-  opacity: 0.8;
-  margin-bottom: 10px;
-}
-
-.swipe-icons {
+.swipe-buttons {
   display: flex;
   justify-content: center;
-  gap: 60px;
-  margin-top: 10px;
+  gap: 16px;
 }
 
-.swipe-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.swipe-icon:hover {
-  transform: scale(1.1);
-}
-
-.swipe-icon:active {
-  transform: scale(0.95);
-}
-
-.swipe-icon-circle {
-  width: 60px;
-  height: 60px;
+.swipe-button {
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  border: 3px solid;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  font-size: 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.swipe-icon:hover .swipe-icon-circle {
-  box-shadow: 0 0 30px currentColor;
-  transform: rotate(10deg);
+.swipe-button:hover {
+  border-color: var(--accent);
+  transform: scale(1.05);
 }
 
-.swipe-icon.dislike .swipe-icon-circle {
+.swipe-button:active {
+  transform: scale(0.95);
+}
+
+.swipe-button.dislike:hover {
   border-color: var(--accent-red);
   color: var(--accent-red);
-  box-shadow: 0 0 20px var(--glow-red);
 }
 
-.swipe-icon.like .swipe-icon-circle {
+.swipe-button.like:hover {
   border-color: var(--accent-green);
   color: var(--accent-green);
-  box-shadow: 0 0 20px var(--glow-green);
-}
-
-.swipe-icon span {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-light);
 }
 
 .stats {
   text-align: center;
-  margin-top: 20px;
-  padding: 15px;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(10px);
-  border: 2px solid var(--accent-gold);
-  border-radius: 20px;
-  box-shadow: 0 4px 20px var(--shadow), 0 0 30px var(--glow-gold);
-  animation: fadeIn 1s ease-out 0.7s both;
-  position: relative;
-  z-index: 2;
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
 }
 
 .stats p {
-  font-size: 1rem;
-  color: var(--text-light);
-  opacity: 0.9;
-  margin-bottom: 10px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
 }
 
-.stats button {
+.button {
   display: inline-block;
-  margin: 5px;
+  padding: 12px 24px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  background: var(--accent);
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 4px;
 }
 
-@keyframes bounceIn {
-  0% {
-    transform: scale(0.3);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  70% {
-    transform: scale(0.9);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.button:active {
+  transform: translateY(0);
 }
 
-@keyframes cardExit {
-  to {
-    opacity: 0;
-    transform: scale(0.8);
-  }
+.button:disabled {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  transform: none;
 }
 
-.card-exit {
-  animation: cardExit 0.3s ease-out forwards;
+.button.secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.button.secondary:hover {
+  border-color: var(--accent);
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 32px 16px;
+  }
+  
   .header h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
   
   .question-text {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
   
   .question-card {
-    min-height: 350px;
-    padding: 30px 20px;
+    min-height: 420px;
+    padding: 40px 24px;
   }
   
-  .swipe-label {
-    font-size: 2.5rem;
+  .swipe-button {
+    width: 56px;
+    height: 56px;
   }
 }
 ```
@@ -526,7 +296,6 @@ body::after {
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    // Initial question pool with categories
     const initialQuestions = [
       { text: "Яка твоя найбезглуздіша мрія?", category: "dreams" },
       { text: "Що б ти змінив у своєму житті, якби міг?", category: "life" },
@@ -579,30 +348,27 @@ body::after {
       const [isDragging, setIsDragging] = useState(false);
       const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
       const [swipeDirection, setSwipeDirection] = useState(null);
+      const [isGenerating, setIsGenerating] = useState(false);
       
       const cardRef = useRef(null);
       const startPosRef = useRef({ x: 0, y: 0 });
 
-      // Initialize questions
       useEffect(() => {
         const shuffled = [...initialQuestions].sort(() => Math.random() - 0.5);
         setQuestions(shuffled);
         
-        // Load preferences from localStorage
         const saved = localStorage.getItem('questionPreferences');
         if (saved) {
           setPreferences(JSON.parse(saved));
         }
       }, []);
 
-      // Save preferences to localStorage
       useEffect(() => {
         if (Object.keys(preferences).length > 0) {
           localStorage.setItem('questionPreferences', JSON.stringify(preferences));
         }
       }, [preferences]);
 
-      // Learning algorithm: adjust question selection based on preferences
       const getNextQuestions = (likedCategory) => {
         const categoryScores = { ...preferences };
         
@@ -612,7 +378,6 @@ body::after {
         
         setPreferences(categoryScores);
         
-        // Sort remaining questions by category preference
         const remaining = initialQuestions.filter(q => 
           !questions.slice(0, currentIndex + 1).includes(q)
         );
@@ -623,7 +388,6 @@ body::after {
           return scoreB - scoreA;
         });
         
-        // Add some randomness to avoid being too predictable
         const topQuestions = sorted.slice(0, 10);
         const shuffled = topQuestions.sort(() => Math.random() - 0.5);
         
@@ -641,22 +405,11 @@ body::after {
           setDislikes(prev => prev + 1);
         }
         
-        // Add exit animation
-        if (cardRef.current) {
-          cardRef.current.classList.add('card-exit');
-        }
-        
-        setTimeout(() => {
-          setCurrentIndex(prev => prev + 1);
-          setDragOffset({ x: 0, y: 0 });
-          setSwipeDirection(null);
-          if (cardRef.current) {
-            cardRef.current.classList.remove('card-exit');
-          }
-        }, 300);
+        setCurrentIndex(prev => prev + 1);
+        setDragOffset({ x: 0, y: 0 });
+        setSwipeDirection(null);
       };
 
-      // Touch and mouse event handlers
       const handleStart = (e) => {
         setIsDragging(true);
         const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
@@ -675,7 +428,6 @@ body::after {
         
         setDragOffset({ x: deltaX, y: deltaY });
         
-        // Show swipe indicators
         if (Math.abs(deltaX) > 50) {
           setSwipeDirection(deltaX > 0 ? 'right' : 'left');
         } else {
@@ -686,7 +438,6 @@ body::after {
       const handleEnd = () => {
         setIsDragging(false);
         
-        // Trigger swipe if dragged far enough
         if (Math.abs(dragOffset.x) > 100) {
           handleSwipe(dragOffset.x > 0 ? 'right' : 'left');
         } else {
@@ -695,23 +446,10 @@ body::after {
         }
       };
 
-      const [isGenerating, setIsGenerating] = useState(false);
-      const [generatedQuestions, setGeneratedQuestions] = useState([]);
-
       const generateNewQuestions = async () => {
         setIsGenerating(true);
         
         try {
-          // Get liked questions for context
-          const likedQuestions = questions
-            .slice(0, currentIndex)
-            .filter((_, idx) => {
-              // Track which questions were liked based on swipe history
-              // This is simplified - in production you'd track this more carefully
-              return true; // We'll use preferences instead
-            });
-
-          // Get top preferred categories
           const sortedCategories = Object.entries(preferences)
             .sort((a, b) => b[1] - a[1])
             .slice(0, 5)
@@ -721,7 +459,6 @@ body::after {
             ? `Користувач найбільше любить питання про: ${sortedCategories.join(', ')}.`
             : '';
 
-          // Get sample liked questions
           const sampleQuestions = questions
             .filter(q => sortedCategories.includes(q.category))
             .slice(0, 5)
@@ -765,7 +502,6 @@ ${sampleQuestions.map(q => `- ${q}`).join('\n')}
             .map(item => item.text)
             .join('');
 
-          // Clean response and parse JSON
           const cleanedText = responseText
             .replace(/```json/g, '')
             .replace(/```/g, '')
@@ -774,7 +510,6 @@ ${sampleQuestions.map(q => `- ${q}`).join('\n')}
           const newQuestions = JSON.parse(cleanedText);
           
           if (Array.isArray(newQuestions) && newQuestions.length > 0) {
-            setGeneratedQuestions(newQuestions);
             setQuestions(newQuestions);
             setCurrentIndex(0);
             setLikes(0);
@@ -790,42 +525,22 @@ ${sampleQuestions.map(q => `- ${q}`).join('\n')}
         }
       };
 
-      // Reset when all questions are done
       if (currentIndex >= questions.length) {
         return (
           <div className="container">
             <div className="header">
-              <h1>Готово! 🎉</h1>
+              <h1>Готово</h1>
               <p>Ти переглянув усі питання</p>
             </div>
             <div className="stats">
-              <p>Вподобано: {likes} | Не сподобалось: {dislikes}</p>
-              <p style={{ fontSize: '0.9rem', marginTop: '10px', marginBottom: '15px' }}>
-                💡 Натисни "Згенерувати", щоб отримати нові питання на основі твоїх вподобань
-              </p>
+              <p>Вподобано: {likes} • Пропущено: {dislikes}</p>
               
               <button 
                 onClick={generateNewQuestions}
                 disabled={isGenerating}
-                style={{
-                  marginTop: '20px',
-                  padding: '15px 30px',
-                  fontSize: '1.1rem',
-                  fontFamily: 'Poppins, sans-serif',
-                  background: isGenerating ? '#334155' : 'linear-gradient(135deg, var(--accent-green) 0%, var(--accent-gold) 100%)',
-                  color: 'white',
-                  border: '3px solid var(--accent-gold)',
-                  borderRadius: '15px',
-                  cursor: isGenerating ? 'not-allowed' : 'pointer',
-                  fontWeight: 600,
-                  marginRight: '10px',
-                  boxShadow: '0 0 20px var(--glow-gold)',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseOver={(e) => !isGenerating && (e.target.style.boxShadow = '0 0 40px var(--glow-green)')}
-                onMouseOut={(e) => !isGenerating && (e.target.style.boxShadow = '0 0 20px var(--glow-gold)')}
+                className="button"
               >
-                {isGenerating ? '⏳ Генерую...' : '✨ Згенерувати 40 нових питань'}
+                {isGenerating ? 'Генерую...' : 'Згенерувати нові питання'}
               </button>
 
               <button 
@@ -836,24 +551,9 @@ ${sampleQuestions.map(q => `- ${q}`).join('\n')}
                   setLikes(0);
                   setDislikes(0);
                 }}
-                style={{
-                  marginTop: '20px',
-                  padding: '15px 30px',
-                  fontSize: '1.1rem',
-                  fontFamily: 'Poppins, sans-serif',
-                  background: 'linear-gradient(135deg, var(--accent-red) 0%, var(--accent-gold) 100%)',
-                  color: 'white',
-                  border: '3px solid var(--accent-red)',
-                  borderRadius: '15px',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  boxShadow: '0 0 20px var(--glow-red)',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseOver={(e) => e.target.style.boxShadow = '0 0 40px var(--glow-red)'}
-                onMouseOut={(e) => e.target.style.boxShadow = '0 0 20px var(--glow-red)'}
+                className="button secondary"
               >
-                🔄 Почати знову з оригінальних
+                Почати знову
               </button>
             </div>
           </div>
@@ -888,7 +588,7 @@ ${sampleQuestions.map(q => `- ${q}`).join('\n')}
               onTouchEnd={handleEnd}
             >
               <div className="question-number">
-                Питання {currentIndex + 1} / {questions.length}
+                {currentIndex + 1} / {questions.length}
               </div>
               <div className="question-text">
                 {currentQuestion?.text}
@@ -905,22 +605,19 @@ ${sampleQuestions.map(q => `- ${q}`).join('\n')}
             </div>
           </div>
 
-          <div className="instructions">
-            <p>Смахни картку або натисни на кнопки</p>
-            <div className="swipe-icons">
-              <div className="swipe-icon dislike" onClick={() => handleSwipe('left')}>
-                <div className="swipe-icon-circle">✕</div>
-                <span>Не подобається</span>
-              </div>
-              <div className="swipe-icon like" onClick={() => handleSwipe('right')}>
-                <div className="swipe-icon-circle">♡</div>
-                <span>Подобається</span>
-              </div>
+          <div className="controls">
+            <div className="swipe-buttons">
+              <button className="swipe-button dislike" onClick={() => handleSwipe('left')}>
+                ✕
+              </button>
+              <button className="swipe-button like" onClick={() => handleSwipe('right')}>
+                ♡
+              </button>
             </div>
           </div>
 
           <div className="stats">
-            <p>Вподобано: {likes} | Не сподобалось: {dislikes}</p>
+            <p>Вподобано: {likes} • Пропущено: {dislikes}</p>
           </div>
         </div>
       );
