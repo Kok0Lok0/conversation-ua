@@ -110,7 +110,8 @@ html, body {
   justify-content: center;
   width: 100%;
   max-width: 400px;
-  padding: 0 20px;
+  padding: 0;
+  margin: 0 auto;
 }
 
 .action-button {
@@ -620,13 +621,13 @@ ${exampleQuestions.map(q => `- ${q}`).join('\n')}` : ''}
                   className="action-button skip" 
                   onClick={() => handleNext(false)}
                 >
-                  Пропустити
+                  Nay
                 </button>
                 <button 
                   className="action-button discuss" 
                   onClick={() => handleNext(true)}
                 >
-                  Обговорити
+                  Yay
                 </button>
               </div>
             </div>
