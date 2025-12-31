@@ -111,25 +111,24 @@ html, body {
 
 .actions {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   justify-content: center;
+  align-items: center;
   width: 100%;
-  max-width: 400px;
-  padding: 0 20px;
-  margin: 0 auto;
+  margin: 0;
+  padding: 0;
 }
 
 .action-button {
   font-family: 'Inter', sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
-  padding: 14px 28px;
+  padding: 14px 0;
   border: 1px solid rgba(26, 26, 26, 0.15);
   background: transparent;
   cursor: pointer;
   transition: all 200ms ease;
-  flex: 1;
-  max-width: 180px;
+  width: 140px;
 }
 
 .action-button.skip {
@@ -679,12 +678,6 @@ ${exampleQuestions.map(q => `- ${q}`).join('\n')}` : ''}
               <div className="question-text">
                 {currentQuestion?.text}
               </div>
-              
-              <div 
-                className="horse-illustration"
-                key={currentIndex}
-                dangerouslySetInnerHTML={{ __html: horses[horseIndex] }}
-              />
               
               <div className="actions">
                 <button 
