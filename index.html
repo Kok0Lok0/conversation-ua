@@ -91,13 +91,17 @@ html, body {
 }
 
 .horse-illustration {
-  width: auto;
-  max-height: 35vh;
-  min-height: 200px;
+  width: 200px;
+  height: auto;
   opacity: 0;
   animation: fadeInHorse 300ms ease-out forwards;
-  margin-left: 12px;
-  margin-bottom: 32px;
+  margin: 0 auto 32px auto;
+  display: block;
+}
+
+.horse-illustration svg {
+  width: 100%;
+  height: auto;
 }
 
 @keyframes fadeInHorse {
@@ -111,7 +115,7 @@ html, body {
   justify-content: center;
   width: 100%;
   max-width: 400px;
-  padding: 0;
+  padding: 0 20px;
   margin: 0 auto;
 }
 
@@ -125,6 +129,7 @@ html, body {
   cursor: pointer;
   transition: all 200ms ease;
   flex: 1;
+  max-width: 180px;
 }
 
 .action-button.skip {
