@@ -86,72 +86,75 @@ html, body {
   line-height: 1.4;
   text-align: center;
   width: 80%;
-  margin: 0 auto 32px auto;
+  margin: 0 auto 48px auto;
   padding: 0;
 }
 
-.horse-illustration {
-  width: 200px;
-  height: auto;
-  opacity: 0;
-  animation: fadeInHorse 300ms ease-out forwards;
-  margin: 0 auto 32px auto;
-  display: block;
+.feedback-section {
+  margin-bottom: 32px;
+  text-align: center;
 }
 
-.horse-illustration svg {
-  width: 100%;
-  height: auto;
-}
-
-@keyframes fadeInHorse {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.actions {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.action-button {
+.feedback-prompt {
   font-family: 'Inter', sans-serif;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 400;
-  padding: 14px 0;
-  border: 1px solid rgba(26, 26, 26, 0.15);
+  opacity: 0.4;
+  margin-bottom: 12px;
+}
+
+.feedback-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+}
+
+.feedback-button {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  padding: 10px 20px;
+  border: 1px solid rgba(26, 26, 26, 0.12);
   background: transparent;
   cursor: pointer;
   transition: all 200ms ease;
-  width: 140px;
+  width: 130px;
+  opacity: 0.5;
 }
 
-.action-button.skip {
-  color: rgba(26, 26, 26, 0.45);
-  border-color: rgba(26, 26, 26, 0.12);
+.feedback-button:hover {
+  opacity: 0.7;
 }
 
-.action-button.skip:hover {
-  border-color: rgba(26, 26, 26, 0.25);
-  color: rgba(26, 26, 26, 0.6);
+.feedback-button.active {
+  opacity: 1;
+  border-color: rgba(26, 26, 26, 0.3);
 }
 
-.action-button.discuss {
-  color: #1a1a1a;
-  border-color: #1a1a1a;
+.navigation {
+  margin-top: auto;
+  padding-top: 32px;
+  text-align: center;
 }
 
-.action-button.discuss:hover {
+.next-button {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  padding: 16px 48px;
   background: #1a1a1a;
   color: #faf8f6;
+  border: none;
+  cursor: pointer;
+  transition: opacity 200ms ease;
 }
 
-.action-button:active {
+.next-button:hover {
+  opacity: 0.85;
+}
+
+.next-button:active {
   transform: scale(0.98);
 }
 
@@ -378,7 +381,9 @@ html, body {
       const [questions, setQuestions] = useState([]);
       const [currentIndex, setCurrentIndex] = useState(0);
       const [preferences, setPreferences] = useState({});
+      const [feedback, setFeedback] = useState(null); // 'like', 'dislike', or null
       const [showHint, setShowHint] = useState(true);
+      const [showFeedbackConfirmation, setShowFeedbackConfirmation] = useState(false);
       const [isGenerating, setIsGenerating] = useState(false);
       const [isDragging, setIsDragging] = useState(false);
       const [dragY, setDragY] = useState(0);
@@ -399,10 +404,7 @@ html, body {
         const handleKeyDown = (e) => {
           if (e.key === 'ArrowDown' || e.key === ' ') {
             e.preventDefault();
-            handleNext(true);
-          } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            handleNext(false);
+            handleNext();
           }
         };
         
@@ -416,29 +418,51 @@ html, body {
         }
       }, [preferences]);
 
-      const recordPreference = (question, liked) => {
-        const categoryScores = { ...preferences };
-        if (liked) {
-          categoryScores[question.category] = (categoryScores[question.category] || 0) + 1;
+      const handleFeedback = (type) => {
+        // Toggle feedback - clicking again removes it
+        if (feedback === type) {
+          setFeedback(null);
+        } else {
+          setFeedback(type);
+          
+          // Show confirmation message after first couple of likes
+          const totalLikes = Object.values(preferences).reduce((sum, val) => sum + val, 0);
+          if (type === 'like' && totalLikes === 1 && !showFeedbackConfirmation) {
+            setShowFeedbackConfirmation(true);
+            setTimeout(() => setShowFeedbackConfirmation(false), 3000);
+          }
         }
-        setPreferences(categoryScores);
-        
-        // Log for debugging
-        console.log('Recorded preference:', {
-          question: question.text,
-          category: question.category,
-          liked,
-          currentScores: categoryScores
-        });
       };
 
-      const handleNext = (liked) => {
+      const handleNext = () => {
         if (currentIndex >= questions.length) return;
         
         setShowHint(false);
-        const currentQuestion = questions[currentIndex];
-        recordPreference(currentQuestion, liked);
+        
+        // Record feedback if any was given
+        if (feedback) {
+          const currentQuestion = questions[currentIndex];
+          const categoryScores = { ...preferences };
+          
+          if (feedback === 'like') {
+            categoryScores[currentQuestion.category] = (categoryScores[currentQuestion.category] || 0) + 1;
+          } else if (feedback === 'dislike') {
+            categoryScores[currentQuestion.category] = (categoryScores[currentQuestion.category] || 0) - 1;
+          }
+          
+          setPreferences(categoryScores);
+          
+          console.log('Recorded feedback:', {
+            question: currentQuestion.text,
+            category: currentQuestion.category,
+            feedback,
+            currentScores: categoryScores
+          });
+        }
+        
+        // Move to next question
         setCurrentIndex(prev => prev + 1);
+        setFeedback(null); // Reset feedback for next question
       };
 
       const handleTouchStart = (e) => {
@@ -457,10 +481,9 @@ html, body {
         setIsDragging(false);
         
         if (Math.abs(dragY) > SWIPE_THRESHOLD) {
-          if (dragY > 0) {
-            handleNext(true);
-          } else {
-            handleNext(false);
+          if (dragY < 0) {
+            // Swipe up = next
+            handleNext();
           }
         }
         
@@ -471,9 +494,8 @@ html, body {
         e.preventDefault();
         if (Math.abs(e.deltaY) > 20) {
           if (e.deltaY > 0) {
-            handleNext(true);
-          } else {
-            handleNext(false);
+            // Scroll down = next
+            handleNext();
           }
         }
       };
@@ -679,18 +701,29 @@ ${exampleQuestions.map(q => `- ${q}`).join('\n')}` : ''}
                 {currentQuestion?.text}
               </div>
               
-              <div className="actions">
-                <button 
-                  className="action-button skip" 
-                  onClick={() => handleNext(false)}
-                >
-                  Не подобається
-                </button>
-                <button 
-                  className="action-button discuss" 
-                  onClick={() => handleNext(true)}
-                >
-                  Подобається
+              <div className="feedback-section">
+                <div className="feedback-prompt">
+                  Хочеш більше таких питань?
+                </div>
+                <div className="feedback-buttons">
+                  <button 
+                    className={`feedback-button ${feedback === 'like' ? 'active' : ''}`}
+                    onClick={() => handleFeedback('like')}
+                  >
+                    Подобається
+                  </button>
+                  <button 
+                    className={`feedback-button ${feedback === 'dislike' ? 'active' : ''}`}
+                    onClick={() => handleFeedback('dislike')}
+                  >
+                    Не для мене
+                  </button>
+                </div>
+              </div>
+              
+              <div className="navigation">
+                <button className="next-button" onClick={handleNext}>
+                  Далі
                 </button>
               </div>
             </div>
@@ -698,7 +731,13 @@ ${exampleQuestions.map(q => `- ${q}`).join('\n')}` : ''}
           
           {showHint && (
             <div className="hint">
-              Проведи вниз, щоб перейти далі
+              Проведи вгору, щоб перейти далі
+            </div>
+          )}
+          
+          {showFeedbackConfirmation && (
+            <div className="hint" style={{ opacity: 0.6, bottom: '80px' }}>
+              Покажемо тобі більше таких питань
             </div>
           )}
         </div>
