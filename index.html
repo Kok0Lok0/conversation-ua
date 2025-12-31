@@ -92,7 +92,8 @@ html, body {
 
 .horse-illustration {
   width: auto;
-  max-height: 30vh;
+  max-height: 35vh;
+  min-height: 200px;
   opacity: 0;
   animation: fadeInHorse 300ms ease-out forwards;
   margin-left: 12px;
@@ -258,13 +259,75 @@ html, body {
     const { useState, useEffect, useRef } = React;
 
     const horses = [
-      `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M60,50 Q65,45 70,48 L75,52 Q78,48 82,52 L85,58 Q88,62 90,68 L92,80 Q93,90 92,100 L90,110 L88,120 L85,115 L82,110 L80,120 L78,130 L77,145 L76,160 L75,170 M85,115 L87,125 L88,135 L89,150 L90,165 L91,175 M60,100 L58,110 L57,125 L56,140 L55,155 L54,170 M70,100 L68,115 L67,130 L66,145 L65,160 L64,172" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      // Standing horse - full body
+      `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100,70 Q110,60 120,65 L130,72 Q135,68 140,73 L145,82 Q150,90 155,100 L160,120 Q162,140 160,160 L155,180 L150,200 L145,190 L140,180 L135,200 L130,220 L128,240 L126,260 M145,190 L147,210 L148,230 L149,250 M100,160 L95,180 L92,200 L90,220 L88,240 M120,160 L115,185 L112,210 L110,235 L108,255" 
+        stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="128" cy="75" r="2" fill="#1a1a1a"/>
+      </svg>`,
       
-      `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M55,52 Q60,48 65,50 L70,54 Q73,50 77,54 L80,60 Q83,64 85,70 L87,82 Q88,92 87,102 L85,112 L83,122 L80,117 L77,112 L75,122 L73,132 L72,140 L71,150 M80,117 L82,127 L83,137 L84,145 L85,155 M55,102 L53,112 L52,122 L51,132 L52,145 M65,102 L63,117 L62,127 L63,140 L64,152" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      // Walking horse
+      `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M90,80 Q100,72 110,78 L120,85 Q125,80 132,86 L138,95 Q145,105 150,118 L155,138 Q157,155 155,172 L150,190 L145,205 L140,195 L135,185 L130,205 L125,220 L122,235 M140,195 L142,215 L143,230 M90,170 L85,190 L82,205 L80,225 M115,170 L110,195 L107,215 L105,240" 
+        stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="118" cy="82" r="2" fill="#1a1a1a"/>
+      </svg>`,
       
-      `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M80,60 Q85,55 90,58 L95,62 Q98,58 102,62 L105,68 Q108,75 110,85 L108,95 Q105,100 100,102 L95,103 Q90,104 85,102 L80,98 Q75,92 74,85 L75,75 Q77,68 80,60 M95,62 L96,68 M102,65 L103,70" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      // Horse head profile
+      `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M120,100 Q130,85 145,92 L160,105 Q165,100 172,108 L178,120 Q185,135 188,152 L185,170 Q180,182 170,188 L155,192 Q140,194 128,188 L118,178 Q110,165 108,150 L110,130 Q115,115 120,100 M155,108 L157,118 M168,115 L170,125" 
+        stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="158" cy="110" r="3" fill="#1a1a1a"/>
+      </svg>`,
       
-      `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M70,55 Q75,50 80,53 L85,57 Q88,53 92,57 L95,63 Q98,67 100,73 L102,85 Q103,95 102,105 L100,115 L98,125 L95,120 L92,115 L90,125 L88,135 L87,148 L86,163 M95,120 L97,130 L98,140 L99,153 L100,165 M70,105 L68,115 L67,128 L66,143 L65,158 M80,105 L78,120 L77,135 L76,150 L75,163" stroke="#1a1a1a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      // Grazing horse
+      `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M95,120 Q105,115 115,120 L125,128 Q130,125 137,130 L143,140 Q148,150 152,165 L155,185 Q156,200 154,215 L150,230 L145,242 L140,235 L135,228 L130,242 L125,255 M140,235 L142,250 M95,212 L90,228 L87,242 M118,212 L113,232 L110,248" 
+        stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="123" cy="125" r="2" fill="#1a1a1a"/>
+      </svg>`,
+      
+      // Horse looking back
+      `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M110,85 Q120,75 132,82 L142,92 Q148,88 155,95 L162,108 Q168,120 172,135 L175,155 Q176,172 173,188 L168,205 L163,220 L158,210 L153,200 L148,218 L143,235 L140,250 M158,210 L160,228 L161,242 M110,185 L105,205 L102,222 M130,185 L125,208 L122,228" 
+        stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="140" cy="88" r="2" fill="#1a1a1a"/>
+      </svg>`,
+      
+      // Running horse
+      `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M85,90 Q95,82 108,88 L120,98 Q126,92 135,100 L143,112 Q150,125 156,142 L160,162 Q162,178 160,194 L155,210 L150,222 L145,212 L140,202 L135,220 L130,235 M145,212 L147,228 M85,192 L80,210 L77,225 M110,192 L105,215 L102,235" 
+        stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="116" cy="92" r="2" fill="#1a1a1a"/>
+      </svg>`,
+      
+      // Side view standing
+      `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M105,75 Q115,68 125,73 L135,82 Q140,78 147,84 L153,95 Q158,105 162,118 L165,138 Q167,155 165,172 L160,190 L155,205 L150,195 L145,185 L140,205 L135,222 L132,240 M150,195 L152,215 L153,232 M105,170 L100,190 L97,210 L94,230 M125,170 L120,195 L117,218 L114,238" 
+        stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="133" cy="78" r="2" fill="#1a1a1a"/>
+      </svg>`,
+      
+      // Rearing horse
+      `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M115,110 Q125,95 138,105 L148,118 Q153,112 160,120 L165,132 Q170,145 172,160 L173,180 Q172,195 168,208 L163,220 L158,230 L153,222 L148,214 L143,230 L138,242 M153,222 L155,235 M125,205 L120,220 L117,235" 
+        stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="145" cy="110" r="2" fill="#1a1a1a"/>
+      </svg>`,
+      
+      // Trotting horse
+      `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M92,88 Q102,80 114,86 L125,95 Q131,90 139,97 L146,108 Q152,120 157,135 L161,155 Q163,172 161,188 L156,205 L151,218 L146,208 L141,198 L136,218 L131,233 L128,248 M146,208 L148,226 L149,240 M92,186 L87,205 L84,220 L81,238 M115,186 L110,210 L107,228 L104,245" 
+        stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="122" cy="88" r="2" fill="#1a1a1a"/>
+      </svg>`,
+      
+      // Young horse
+      `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path d="M108,95 Q118,88 128,94 L138,103 Q143,98 150,105 L156,116 Q161,127 165,142 L168,162 Q170,178 168,193 L163,208 L158,220 L153,212 L148,204 L143,220 L138,235 M153,212 L155,228 M108,190 L103,208 L100,224 M128,190 L123,212 L120,230" 
+        stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="136" cy="97" r="2.5" fill="#1a1a1a"/>
+      </svg>`
     ];
 
     const initialQuestions = [
