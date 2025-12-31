@@ -593,13 +593,15 @@ ${exampleQuestions.map(q => `- ${q}`).join('\n')}` : ''}
             <p>{currentIndex + 1} з {QUESTIONS_PER_ROUND}</p>
           </div>
           
-          <div className="question-container">
+          <div 
+            className="question-container"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onWheel={handleWheel}
+          >
             <div 
               className="question-wrapper"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              onWheel={handleWheel}
               style={{
                 transform: `translateY(${dragY}px)`,
                 opacity: opacity,
